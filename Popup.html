@@ -1,0 +1,247 @@
+<!DOCTYPE>
+<html lang="zh_CN">
+<head>
+	<meta charset="utf-8">
+	<title>IFE JavaScript Task 37</title>
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		* {
+    padding: 0;
+    margin: 0;
+    font-family: "Microsoft YaHei UI", sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+}
+header h1 {
+    margin: 25px 0;
+}
+section.btn {
+    text-align: center;
+}
+section.btn input[type="button"] {
+    padding: 8px 15px;
+    background: white;
+    border: none;
+    outline: none;
+    height: 40px;
+    width: 200px;
+    margin: 20px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+}
+section input[type="button"]:hover {
+    background: #20c5ff;
+    color: white;
+}
+
+.pop-up {
+    position: fixed;
+    display: none;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.pop-wrap.show {
+    display: block;
+    z-index: 9999;
+}
+.pop-up .show{
+	display: block;
+}
+.pop-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-width: 300px;
+    min-height: 200px;
+    background-color: #fff;
+    border-radius: 3px;
+    display: none;
+}
+.pop-wrap.info .pop-header {
+    background-color: #fff;
+    color: #333; }
+.pop-wrap.error .pop-header {
+    background-color: #e74c3c;
+    color: #fff; }
+.pop-wrap.success .pop-header {
+    background-color: #2ecc71;
+    color: #fff; }
+.pop-wrap.warning .pop-header {
+    background-color: #f1c40f;
+    color: #fff; }
+.pop-wrap .pop-header {
+    padding: 10px;
+    overflow: hidden;
+}
+.pop-wrap .pop-header a {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    opacity: 0.4;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.pop-wrap .pop-header a:hover {
+    opacity: 1;
+}
+.pop-wrap h3 {
+    float: left;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+.pop-wrap .pop-content {
+    padding: 10px;
+}
+.pop-wrap .pop-control {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: right;
+}
+.pop-wrap input[type="button"] {
+    border: none;
+    background-color: #2ecc71;
+    border-radius: 3px;
+    outline: none;
+    padding: 5px 20px;
+    margin: 10px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.pop-wrap input[type="button"]:hover {
+    background-color: #58d68d;
+}
+.pop-wrap input[type="button"]:active {
+    background-color: #27ad60;
+    color: #ccc;
+}
+.pop-wrap input[type="button"].cancel {
+    background-color: #e74c3c;
+}
+.pop-wrap input[type="button"].cancel:hover {
+    background-color: #ec7063;
+}
+.pop-wrap input[type="button"].cancel:active {
+    background-color: #c44133;
+}
+
+.pop-wrap .resizeL, .pop-wrap .resizeT, .pop-wrap .resizeR, .pop-wrap .resizeB, .pop-wrap .resizeLT, .pop-wrap .resizeTR, .pop-wrap .resizeLB, .pop-wrap.resizeBR {
+    position: absolute;
+    overflow: hidden;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.pop-wrap .resizeL, .pop-up .resizeR {
+    top: 0;
+    width: 5px;
+    height: 100%;
+}
+.pop-wrap .resizeL {
+    left: 0;
+    cursor: w-resize;
+}
+.pop-wrap .resizeR {
+    right: 0;
+    cursor: e-resize;
+}
+
+.pop-wrap .resizeT, .pop-wrap .resizeB {
+    width: 100%;
+    height: 5px;
+    left: 0;
+}
+.pop-wrap .resizeT {
+    top: 0;
+    cursor: n-resize;
+}
+.pop-wrap .resizeB {
+    bottom: 0;
+    cursor: s-resize;
+}
+
+.pop-wrap .resizeLT, .pop-up .resizeTR, .pop-up .resizeLB, .pop-up .resizeBR {
+    width: 10px;
+    height: 10px;
+}
+.pop-wrap .resizeLT {
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+}
+.pop-wrap .resizeTR {
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+}
+.pop-wrap .resizeLB {
+    left: 0;
+    bottom: 0;
+    cursor: sw-resize;
+}
+.pop-wrap .resizeBR {
+    right: 0;
+    bottom: 0;
+    cursor: se-resize;
+}
+	</style>
+</head>
+<body>
+<section class="btn">
+	<input type="button" value="click at me" id="btn">
+</section>
+<script type="text/javascript" src="tool.js"></script>
+<script type="text/javascript" src="Popup.js"></script>
+<script type="text/javascript">
+	var btn = document.querySelector("#btn");
+	//这里直接初始化一个对象，如果多次初始化对象，会导致事件重复绑定的BUG
+	var pop = Popup({
+		type: "success",//窗体样式info error success warning
+		width: 500,//弹窗最小300
+		height: 300,//弹窗最小200
+		confirm: function () {//确认按钮回调函数
+			alert("ori");
+		},
+		cancel: function () {//取消按钮回调函数
+			alert("spirit tree");
+		},
+		title: "Ori and Blind Forest",//弹窗标题
+		content: "Ori",//弹窗内容
+		allowDrag: true,
+		allowPageWheel: true,
+		// allowResize: true
+	});
+	tool.addEvent(btn, "click", function () {
+		pop.toggle();
+	});
+</script>
+</body>
+</html>
